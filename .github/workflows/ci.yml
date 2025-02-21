@@ -52,7 +52,7 @@ jobs:
       - name: Upload Python coverage report
         uses: actions/upload-artifact@v4
         with:
-          name: python-coverage-report-${{ matrix.python-version }}
+          name: python-coverage-${{ matrix.python-version }}
           path: |
             htmlcov/
             coverage.xml
@@ -85,7 +85,7 @@ jobs:
       - name: Upload frontend coverage report
         uses: actions/upload-artifact@v4
         with:
-          name: frontend-coverage-report-${{ matrix.node-version }}
+          name: frontend-coverage-${{ matrix.node-version }}
           path: packages/plato-web/coverage/
           if-no-files-found: error
 
@@ -101,12 +101,41 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Download all coverage reports
+      - uses: actions/checkout@v4
+
+      - name: Create coverage directory structure
+        run: |
+          mkdir -p coverage-reports/python/3.11
+          mkdir -p coverage-reports/python/3.12
+          mkdir -p coverage-reports/frontend/18.x
+          mkdir -p coverage-reports/frontend/20.x
+
+      - name: Download Python 3.11 coverage
         uses: actions/download-artifact@v4
         with:
-          path: coverage-reports
-          pattern: "*-coverage-report-*"
-          merge-multiple: true
+          name: python-coverage-3.11
+          path: coverage-reports/python/3.11
+
+      - name: Download Python 3.12 coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: python-coverage-3.12
+          path: coverage-reports/python/3.12
+
+      - name: Download Node.js 18.x coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-coverage-18.x
+          path: coverage-reports/frontend/18.x
+
+      - name: Download Node.js 20.x coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-coverage-20.x
+          path: coverage-reports/frontend/20.x
+
+      - name: Copy index page
+        run: cp coverage-index.html coverage-reports/index.html
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
