@@ -71,7 +71,7 @@ jobs:
 
       - name: Run tests with coverage
         working-directory: packages/plato-web
-        run: npm test -- --coverage --no-fail-on-coverage
+        run: npm run test:coverage
 
       - name: Upload frontend coverage report
         uses: actions/upload-artifact@v4
