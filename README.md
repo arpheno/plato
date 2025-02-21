@@ -1,6 +1,15 @@
 # Plato - DevOps Automation Platform
 
+[![CI](https://github.com/arpheno/plato/actions/workflows/ci.yml/badge.svg)](https://github.com/arpheno/plato/actions/workflows/ci.yml)
+[![Coverage Report](https://img.shields.io/badge/coverage-report-blue.svg)](https://arpheno.github.io/plato/)
+
 Plato is a DevOps automation platform designed to remove friction from deploying and managing multiple side projects. It provides a unified interface for managing deployments across various environments, from local machines to cloud providers.
+
+## Coverage Reports
+
+- [Latest Coverage Report](https://arpheno.github.io/plato/) - View detailed test coverage for both Python and JavaScript code
+  - Python Coverage: View reports for plato-core, plato-cli, and plato-api
+  - Frontend Coverage: View Vue.js component and unit test coverage
 
 ## Features
 
