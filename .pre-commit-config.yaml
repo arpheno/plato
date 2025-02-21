@@ -40,14 +40,15 @@ repos:
 
   - repo: local
     hooks:
-      # Temporarily disabled due to file modification issue
-      # - id: pytest-check
-      #   name: pytest-check
-      #   entry: pytest
-      #   language: system
-      #   pass_filenames: false
-      #   always_run: true
-      #   args: ["--cov=plato_core", "--cov=plato_cli", "--cov=plato_api", "--cov-fail-under=90"]
+      - id: pytest-check
+        name: pytest-check
+        entry: pytest
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [commit]
+        # Run tests without generating coverage files during pre-commit
+        args: ["-v", "--no-cov"]
 
       - id: frontend-test
         name: frontend-test

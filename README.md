@@ -169,9 +169,11 @@ See `.env.example` for all available options.
    - Format code (Ruff for Python, Prettier for JS/TS/Vue)
    - Run linters
    - Check types with MyPy
-   - Run tests and check coverage
+   - Run tests (without coverage)
    - Validate commit messages
    - Check for common issues (merge conflicts, large files, etc.)
+
+   Note: Full test coverage checks are run in CI pipelines.
 
 4. Commit your changes:
    ```bash
