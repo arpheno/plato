@@ -38,14 +38,16 @@ jobs:
       - name: Run tests with coverage
         run: |
           source .venv/bin/activate
-          pytest --cov=plato_core --cov=plato_cli --cov=plato_api --cov-report=xml
+          pytest --cov=plato_core --cov=plato_cli --cov=plato_api --cov-report=xml --cov-report=html
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+      - name: Upload Python coverage report
+        uses: actions/upload-artifact@v4
         with:
-          file: ./coverage.xml
-          fail_ci_if_error: true
-          token: ${{ secrets.CODECOV_TOKEN }}
+          name: python-coverage-report-${{ matrix.python-version }}
+          path: |
+            htmlcov/
+            coverage.xml
+          if-no-files-found: error
 
   test-frontend:
     runs-on: ubuntu-latest
@@ -71,12 +73,42 @@ jobs:
         working-directory: packages/plato-web
         run: npm test -- --coverage
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+      - name: Upload frontend coverage report
+        uses: actions/upload-artifact@v4
         with:
-          file: packages/plato-web/coverage/coverage-final.json
-          fail_ci_if_error: true
-          token: ${{ secrets.CODECOV_TOKEN }}
+          name: frontend-coverage-report-${{ matrix.node-version }}
+          path: packages/plato-web/coverage/
+          if-no-files-found: error
+
+  publish-coverage:
+    needs: [test-python, test-frontend]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Download all coverage reports
+        uses: actions/download-artifact@v4
+        with:
+          path: coverage-reports
+          pattern: "*-coverage-report-*"
+          merge-multiple: true
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload coverage to Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: coverage-reports
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
 
   lint:
     runs-on: ubuntu-latest
