@@ -1,6 +1,5 @@
 """Tests for deployment domain models."""
 
-import pytest
 from plato_core.domain.deployment import DeploymentTarget, ProviderType
 
 
@@ -10,7 +9,7 @@ def test_create_local_deployment():
         name="local-dev",
         provider=ProviderType.LOCAL,
         host="localhost",
-        config={"port": "8080"}
+        config={"port": "8080"},
     )
     assert target.name == "local-dev"
     assert target.provider == ProviderType.LOCAL
@@ -27,12 +26,9 @@ def test_create_aws_deployment():
         host="ec2-1-2-3-4.compute-1.amazonaws.com",
         credentials={
             "aws_access_key_id": "dummy_key",
-            "aws_secret_access_key": "dummy_secret"
+            "aws_secret_access_key": "dummy_secret",
         },
-        config={
-            "region": "us-west-2",
-            "instance_type": "t3.micro"
-        }
+        config={"region": "us-west-2", "instance_type": "t3.micro"},
     )
     assert target.name == "prod-aws"
     assert target.provider == ProviderType.AWS
@@ -44,8 +40,6 @@ def test_create_aws_deployment():
 def test_validate_credentials():
     """Test credential validation."""
     target = DeploymentTarget(
-        name="test",
-        provider=ProviderType.LOCAL,
-        host="localhost"
+        name="test", provider=ProviderType.LOCAL, host="localhost"
     )
-    assert target.validate_credentials() is True  # Currently a placeholder 
+    assert target.validate_credentials() is True  # Currently a placeholder

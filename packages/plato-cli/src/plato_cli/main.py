@@ -2,10 +2,11 @@
 Plato CLI - DevOps automation tool for managing multiple side projects.
 """
 
-import typer
-from rich import print as rprint
 from typing import Optional
+
+import typer
 from plato_core.domain.deployment import DeploymentTarget, ProviderType
+from rich import print as rprint
 
 app = typer.Typer(
     name="plato",
@@ -44,4 +45,4 @@ def list_targets() -> None:
 
 
 if __name__ == "__main__":
-    app() 
+    app()

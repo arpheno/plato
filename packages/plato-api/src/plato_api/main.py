@@ -3,7 +3,7 @@ Plato API - REST API service for DevOps automation platform.
 """
 
 from fastapi import FastAPI, HTTPException
-from plato_core.domain.deployment import DeploymentTarget, ProviderType
+from plato_core.domain.deployment import DeploymentTarget
 
 app = FastAPI(
     title="Plato API",
@@ -34,4 +34,4 @@ async def create_target(target: DeploymentTarget) -> DeploymentTarget:
 async def list_targets() -> list[DeploymentTarget]:
     """List all deployment targets."""
     # Placeholder - will implement storage later
-    return [] 
+    return []

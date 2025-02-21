@@ -1,6 +1,5 @@
 """Tests for the Plato API."""
 
-import pytest
 from fastapi.testclient import TestClient
 from plato_api.main import app
 from plato_core.domain.deployment import ProviderType
@@ -21,7 +20,7 @@ def test_create_target():
         "name": "test-target",
         "provider": ProviderType.LOCAL.value,
         "host": "localhost",
-        "config": {"port": "8080"}
+        "config": {"port": "8080"},
     }
     response = client.post("/api/v1/targets", json=target_data)
     assert response.status_code == 200
@@ -36,7 +35,7 @@ def test_create_target_invalid():
     target_data = {
         "name": "test-target",
         "provider": "invalid-provider",  # Invalid enum value
-        "host": "localhost"
+        "host": "localhost",
     }
     response = client.post("/api/v1/targets", json=target_data)
     assert response.status_code == 422  # Validation error
@@ -46,7 +45,7 @@ def test_list_targets():
     """Test listing deployment targets."""
     response = client.get("/api/v1/targets")
     assert response.status_code == 200
-    assert response.json() == []  # Empty list for now 
+    assert response.json() == []  # Empty list for now
 
 
 def test_create_target_invalid_credentials(mocker):
@@ -55,7 +54,7 @@ def test_create_target_invalid_credentials(mocker):
         "plato_core.domain.deployment.DeploymentTarget.validate_credentials",
         return_value=False,
     )
-    
+
     response = client.post(
         "/api/v1/targets",
         json={
@@ -65,4 +64,4 @@ def test_create_target_invalid_credentials(mocker):
         },
     )
     assert response.status_code == 400
-    assert response.json()["detail"] == "Invalid credentials" 
+    assert response.json()["detail"] == "Invalid credentials"

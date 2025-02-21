@@ -125,4 +125,4 @@ docker-up: check-deps ## Start Docker services
 docker-down: ## Stop Docker services
 	$(call log_info,Stopping Docker services...)
 	@docker-compose down
-	$(call log_success,Docker services stopped!) 
+	$(call log_success,Docker services stopped!)

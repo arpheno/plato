@@ -1,8 +1,8 @@
 """Tests for the Plato CLI."""
 
-from typer.testing import CliRunner
 from plato_cli.main import app
 from plato_core.domain.deployment import ProviderType
+from typer.testing import CliRunner
 
 runner = CliRunner()
 
@@ -31,4 +31,4 @@ def test_list_targets():
     """Test listing deployment targets."""
     result = runner.invoke(app, ["list-targets"])
     assert result.exit_code == 0
-    assert "No targets configured yet" in result.stdout 
+    assert "No targets configured yet" in result.stdout

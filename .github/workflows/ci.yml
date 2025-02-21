@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   test-python:
@@ -14,38 +14,38 @@ jobs:
         python-version: ["3.11", "3.12"]
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python-version }}
-        cache: 'pip'
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "pip"
 
-    - name: Install uv
-      run: |
-        curl -LsSf https://astral.sh/uv/install.sh | sh
-        echo "$HOME/.local/bin" >> $GITHUB_PATH
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
 
-    - name: Install dependencies
-      run: |
-        uv venv .venv
-        source .venv/bin/activate
-        uv pip install -e "packages/plato-core[dev]"
-        uv pip install -e "packages/plato-cli[dev]"
-        uv pip install -e "packages/plato-api[dev]"
+      - name: Install dependencies
+        run: |
+          uv venv .venv
+          source .venv/bin/activate
+          uv pip install -e "packages/plato-core[dev]"
+          uv pip install -e "packages/plato-cli[dev]"
+          uv pip install -e "packages/plato-api[dev]"
 
-    - name: Run tests with coverage
-      run: |
-        source .venv/bin/activate
-        pytest --cov=plato_core --cov=plato_cli --cov=plato_api --cov-report=xml
+      - name: Run tests with coverage
+        run: |
+          source .venv/bin/activate
+          pytest --cov=plato_core --cov=plato_cli --cov=plato_api --cov-report=xml
 
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v4
-      with:
-        file: ./coverage.xml
-        fail_ci_if_error: true
-        token: ${{ secrets.CODECOV_TOKEN }}
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage.xml
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   test-frontend:
     runs-on: ubuntu-latest
@@ -54,70 +54,70 @@ jobs:
         node-version: [18.x, 20.x]
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        cache-dependency-path: packages/plato-web/package-lock.json
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+          cache-dependency-path: packages/plato-web/package-lock.json
 
-    - name: Install dependencies
-      working-directory: packages/plato-web
-      run: npm ci
+      - name: Install dependencies
+        working-directory: packages/plato-web
+        run: npm ci
 
-    - name: Run tests with coverage
-      working-directory: packages/plato-web
-      run: npm test -- --coverage
+      - name: Run tests with coverage
+        working-directory: packages/plato-web
+        run: npm test -- --coverage
 
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v4
-      with:
-        file: packages/plato-web/coverage/coverage-final.json
-        fail_ci_if_error: true
-        token: ${{ secrets.CODECOV_TOKEN }}
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          file: packages/plato-web/coverage/coverage-final.json
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   lint:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.11"
-        cache: 'pip'
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
 
-    - name: Install uv
-      run: |
-        curl -LsSf https://astral.sh/uv/install.sh | sh
-        echo "$HOME/.local/bin" >> $GITHUB_PATH
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
 
-    - name: Install dependencies
-      run: |
-        uv venv .venv
-        source .venv/bin/activate
-        uv pip install ruff mypy black
+      - name: Install dependencies
+        run: |
+          uv venv .venv
+          source .venv/bin/activate
+          uv pip install ruff mypy black
 
-    - name: Run linters
-      run: |
-        source .venv/bin/activate
-        ruff check .
-        black --check .
-        mypy packages/plato-*/src
+      - name: Run linters
+        run: |
+          source .venv/bin/activate
+          ruff check .
+          black --check .
+          mypy packages/plato-*/src
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18.x'
-        cache: 'npm'
-        cache-dependency-path: packages/plato-web/package-lock.json
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18.x"
+          cache: "npm"
+          cache-dependency-path: packages/plato-web/package-lock.json
 
-    - name: Install frontend dependencies
-      working-directory: packages/plato-web
-      run: npm ci
+      - name: Install frontend dependencies
+        working-directory: packages/plato-web
+        run: npm ci
 
-    - name: Run frontend linters
-      working-directory: packages/plato-web
-      run: npm run lint 
+      - name: Run frontend linters
+        working-directory: packages/plato-web
+        run: npm run lint

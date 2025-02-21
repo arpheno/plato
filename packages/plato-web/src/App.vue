@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView } from "vue-router";
 </script>
 
 <style scoped>
@@ -47,4 +47,4 @@ main {
   max-width: 1200px;
   margin: 0 auto;
 }
-</style> 
+</style>

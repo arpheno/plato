@@ -28,35 +28,35 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import { ref, onMounted } from "vue";
+import axios from "axios";
 
 interface DeploymentTarget {
-  name: string
-  provider: string
-  host: string
-  config?: Record<string, string>
+  name: string;
+  provider: string;
+  host: string;
+  config?: Record<string, string>;
 }
 
-const targets = ref<DeploymentTarget[]>([])
-const loading = ref(true)
-const error = ref<string | null>(null)
+const targets = ref<DeploymentTarget[]>([]);
+const loading = ref(true);
+const error = ref<string | null>(null);
 
 const fetchTargets = async () => {
   try {
-    const response = await axios.get('/api/v1/targets')
-    targets.value = Array.isArray(response?.data) ? response.data : []
+    const response = await axios.get("/api/v1/targets");
+    targets.value = Array.isArray(response?.data) ? response.data : [];
   } catch (e) {
-    error.value = 'Failed to fetch deployment targets'
-    console.error(e)
+    error.value = "Failed to fetch deployment targets";
+    console.error(e);
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-}
+};
 
 onMounted(() => {
-  fetchTargets()
-})
+  fetchTargets();
+});
 </script>
 
 <style scoped>
@@ -133,4 +133,4 @@ onMounted(() => {
   color: #666;
   font-size: 0.875rem;
 }
-</style> 
+</style>

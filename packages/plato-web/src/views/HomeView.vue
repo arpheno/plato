@@ -2,19 +2,24 @@
   <div class="home">
     <h1>Welcome to Plato</h1>
     <p>Your DevOps automation platform for managing multiple side projects.</p>
-    
+
     <div class="features">
       <div class="feature">
         <h3>Deployment Management</h3>
-        <p>Configure and manage deployment targets across different environments.</p>
+        <p>
+          Configure and manage deployment targets across different environments.
+        </p>
         <RouterLink to="/targets" class="btn">View Targets</RouterLink>
       </div>
-      
+
       <div class="feature">
         <h3>Project Overview</h3>
-        <p>Get a bird's eye view of all your projects and their deployment status.</p>
+        <p>
+          Get a bird's eye view of all your projects and their deployment
+          status.
+        </p>
       </div>
-      
+
       <div class="feature">
         <h3>Automated Deployments</h3>
         <p>Set up automated deployment pipelines for your projects.</p>
@@ -24,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
+import { RouterLink } from "vue-router";
 </script>
 
 <style scoped>
@@ -72,4 +77,4 @@ h1 {
 .btn:hover {
   background-color: #3aa876;
 }
-</style> 
+</style>

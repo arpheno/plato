@@ -2,6 +2,15 @@
 
 Plato is a DevOps automation platform designed to remove friction from deploying and managing multiple side projects. It provides a unified interface for managing deployments across various environments, from local machines to cloud providers.
 
+## Features
+
+- 🚀 Unified deployment interface
+- 🔄 Automated CI/CD pipelines
+- 📊 Deployment monitoring and logging
+- 🛡️ Security-first approach
+- 🎯 Multi-environment support
+- 🔌 Extensible plugin architecture
+
 ## Project Structure
 
 ```
@@ -12,6 +21,7 @@ plato/
 │   ├── plato-api/       # REST API service
 │   └── plato-web/       # Vue.js frontend
 ├── docker/              # Docker-related configurations
+├── .github/             # GitHub Actions and configuration
 └── docker-compose.yml   # Docker Compose configuration
 ```
 
@@ -21,10 +31,37 @@ plato/
 - Node.js 18 or higher
 - Docker and Docker Compose
 - Make (optional, for using Makefile commands)
+- Git
+- pre-commit
 
 ## Development Setup
 
-### Backend (Core, CLI, and API)
+### Quick Start
+
+```bash
+# Clone the repository
+git clone https://github.com/arpheno/plato.git
+cd plato
+
+# Setup backend
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+make install-dev  # Installs all backend packages in development mode
+
+# Setup frontend
+cd packages/plato-web
+npm install
+cd ../..
+
+# Setup pre-commit hooks
+pip install pre-commit
+pre-commit install
+pre-commit install --hook-type commit-msg  # For conventional commits check
+```
+
+### Detailed Setup
+
+#### Backend (Core, CLI, and API)
 
 1. Create and activate a virtual environment:
    ```bash
@@ -41,13 +78,14 @@ plato/
 
 3. Run tests:
    ```bash
-   # Run tests for all packages
+   make test  # Runs all tests with coverage
+   # Or run individual package tests:
    pytest packages/plato-core/tests
    pytest packages/plato-cli/tests
    pytest packages/plato-api/tests
    ```
 
-### Frontend
+#### Frontend
 
 1. Install dependencies:
    ```bash
@@ -58,12 +96,29 @@ plato/
 2. Run tests:
    ```bash
    npm test
+   npm run coverage  # For coverage report
    ```
 
 3. Start development server:
    ```bash
    npm run dev
    ```
+
+## Testing Strategy
+
+We follow a comprehensive testing approach:
+
+### Backend Testing
+- Unit tests with pytest
+- Integration tests for API endpoints
+- Property-based testing for core logic
+- 90%+ code coverage requirement
+
+### Frontend Testing
+- Component tests with Vitest
+- E2E tests with Cypress
+- Accessibility testing
+- Visual regression testing
 
 ## Docker Setup
 
@@ -73,38 +128,121 @@ To run the entire stack using Docker:
 docker-compose up --build
 ```
 
-This will start:
-- API service at http://localhost:8000
-- Web interface at http://localhost:80
+Services:
+- API: http://localhost:8000
+- Web Interface: http://localhost:80
+- Documentation: http://localhost:8000/docs
 
 ## Configuration
 
 ### Environment Variables
 
+Core configuration:
+- `PLATO_ENV`: Environment name (development/staging/production)
+- `LOG_LEVEL`: Logging level (default: INFO)
 - `PORT`: API service port (default: 8000)
-- Additional configuration options will be documented as they are implemented
 
-## Testing
+Frontend configuration:
+- `VITE_API_URL`: API endpoint URL
+- `VITE_ENV`: Environment name
 
-Each package contains its own test suite:
+See `.env.example` for all available options.
 
-- Core: Python unit tests using pytest
-- CLI: Python unit tests using pytest
-- API: Python unit tests using pytest
-- Web: JavaScript/TypeScript tests using Vitest
+## Development Workflow
+
+1. Create a feature branch from main:
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+
+2. Make your changes following our coding standards:
+   - Use type hints in Python code
+   - Follow Vue.js Composition API patterns
+   - Write tests for new features
+   - Update documentation as needed
+
+3. Stage your changes:
+   ```bash
+   git add .
+   ```
+   Pre-commit hooks will automatically:
+   - Format code (Ruff for Python, Prettier for JS/TS/Vue)
+   - Run linters
+   - Check types with MyPy
+   - Run tests and check coverage
+   - Validate commit messages
+   - Check for common issues (merge conflicts, large files, etc.)
+
+4. Commit your changes:
+   ```bash
+   git commit -m "type(scope): description"
+   ```
+   If any pre-commit checks fail:
+   - Review the errors
+   - Make necessary fixes
+   - Stage the changes
+   - Try committing again
+
+5. Run tests and linting:
+   ```bash
+   make lint test  # Backend
+   npm run lint test  # Frontend
+   ```
+
+6. Create a pull request:
+   - Use the PR template
+   - Link related issues
+   - Add meaningful description
+   - Request reviews
+
+## Deployment
+
+We use GitHub Actions for CI/CD:
+
+1. Push to feature branch:
+   - Runs tests
+   - Checks code coverage
+   - Performs linting
+
+2. Merge to main:
+   - Runs full test suite
+   - Builds Docker images
+   - Deploys to staging
+   - Runs integration tests
+
+3. Create release:
+   - Deploys to production
+   - Runs smoke tests
+   - Monitors deployment
 
 ## Contributing
 
 1. Fork the repository
 2. Create a feature branch
-3. Commit your changes
+3. Commit your changes (use conventional commits)
 4. Push to the branch
 5. Create a Pull Request
+
+### Commit Message Format
+
+We follow [Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+<type>(<scope>): <description>
+
+[optional body]
+
+[optional footer]
+```
+
+Types: feat, fix, docs, style, refactor, test, chore
+
+## Support
+
+- Documentation: [Link to docs]
+- Issue Tracker: GitHub Issues
+- Security: [security@example.com](mailto:security@example.com)
 
 ## License
 
 [MIT License](LICENSE)
-
-## Security
-
-For security concerns, please email [security@example.com](mailto:security@example.com).

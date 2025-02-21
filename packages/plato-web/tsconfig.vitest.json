@@ -8,4 +8,4 @@
     "types": ["node", "jsdom", "vitest/globals"],
     "isolatedModules": true
   }
-} 
+}

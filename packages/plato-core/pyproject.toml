@@ -61,4 +61,4 @@ fail_under = 90
 directory = "coverage_html"
 
 [tool.coverage.xml]
-output = "coverage.xml" 
+output = "coverage.xml"
