@@ -57,15 +57,13 @@ jobs:
       - name: Run tests with coverage
         run: |
           source .venv/bin/activate
-          pytest --cov=plato_core --cov=plato_cli --cov=plato_api --cov-report=xml --cov-report=html
+          pytest --cov=plato_core --cov=plato_cli --cov=plato_api --cov-report=xml --cov-report=html:coverage_html
 
       - name: Upload Python coverage report
         uses: actions/upload-artifact@v4
         with:
           name: python-coverage-${{ matrix.python-version }}
-          path: |
-            htmlcov/
-            coverage.xml
+          path: coverage_html
           if-no-files-found: error
 
   test-frontend:
@@ -254,3 +252,11 @@ jobs:
       - name: Run frontend linters
         working-directory: packages/plato-web
         run: npm run lint
+
+      # Add debug step to verify files
+      - name: Debug - List coverage files
+        run: |
+          echo "Python 3.11 coverage files:"
+          ls -la _site/python/3.11/htmlcov || echo "Directory not found"
+          echo "Python 3.12 coverage files:"
+          ls -la _site/python/3.12/htmlcov || echo "Directory not found"

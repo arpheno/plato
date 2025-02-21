@@ -32,7 +32,7 @@ build-backend = "hatchling.build"
 [tool.pytest.ini_options]
 testpaths = ["packages/plato-core/tests", "packages/plato-cli/tests", "packages/plato-api/tests"]
 python_files = ["test_*.py"]
-addopts = "-v --cov=plato_core --cov=plato_cli --cov=plato_api --cov-report=term-missing --cov-report=html --cov-report=xml"
+addopts = "-v --cov=plato_core --cov=plato_cli --cov=plato_api --cov-report=term-missing --cov-report=html:coverage_html --cov-report=xml"
 
 [tool.coverage.run]
 branch = true
