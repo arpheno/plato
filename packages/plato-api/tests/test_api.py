@@ -47,3 +47,22 @@ def test_list_targets():
     response = client.get("/api/v1/targets")
     assert response.status_code == 200
     assert response.json() == []  # Empty list for now 
+
+
+def test_create_target_invalid_credentials(mocker):
+    """Test creating a target with invalid credentials."""
+    mocker.patch(
+        "plato_core.domain.deployment.DeploymentTarget.validate_credentials",
+        return_value=False,
+    )
+    
+    response = client.post(
+        "/api/v1/targets",
+        json={
+            "name": "test-target",
+            "provider": "local",
+            "host": "localhost",
+        },
+    )
+    assert response.status_code == 400
+    assert response.json()["detail"] == "Invalid credentials" 

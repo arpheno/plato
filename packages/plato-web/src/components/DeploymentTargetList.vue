@@ -45,7 +45,7 @@ const error = ref<string | null>(null)
 const fetchTargets = async () => {
   try {
     const response = await axios.get('/api/v1/targets')
-    targets.value = response.data
+    targets.value = Array.isArray(response?.data) ? response.data : []
   } catch (e) {
     error.value = 'Failed to fetch deployment targets'
     console.error(e)

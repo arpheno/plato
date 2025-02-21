@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["src/**/__tests__/*"],
+  "exclude": [],
+  "compilerOptions": {
+    "composite": true,
+    "lib": ["es2022", "dom"],
+    "types": ["node", "jsdom", "vitest/globals"],
+    "isolatedModules": true
+  }
+} 

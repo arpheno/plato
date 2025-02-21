@@ -23,8 +23,8 @@ def test_add_target_invalid_provider():
         app,
         ["add-target", "test-target", "invalid-provider", "localhost"],
     )
-    assert result.exit_code == 1
-    assert "Failed to add target" in result.stdout
+    assert result.exit_code == 2  # Typer validation error
+    assert "Invalid value for 'PROVIDER:{local|aws|raspberry_pi}'" in result.stdout
 
 
 def test_list_targets():

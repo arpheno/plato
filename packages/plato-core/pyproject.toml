@@ -13,6 +13,8 @@ dependencies = [
 dev = [
     "pytest~=8.0.0",
     "pytest-cov~=4.1.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-mock>=3.12.0",
     "black~=24.1.0",
     "ruff~=0.2.1",
     "mypy~=1.8.0",
@@ -28,7 +30,7 @@ packages = ["src/plato_core"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
-addopts = "-v --cov=plato_core"
+addopts = "-v --cov=plato_core --cov-report=term-missing --cov-report=html"
 
 [tool.ruff]
 select = ["E", "F", "I", "N", "W"]
@@ -39,4 +41,24 @@ line-length = 88
 python_version = "3.11"
 warn_return_any = true
 warn_unused_configs = true
-disallow_untyped_defs = true 
+disallow_untyped_defs = true
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if __name__ == .__main__.:",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+]
+fail_under = 90
+
+[tool.coverage.html]
+directory = "coverage_html"
+
+[tool.coverage.xml]
+output = "coverage.xml" 
